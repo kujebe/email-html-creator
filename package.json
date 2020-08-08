@@ -1,0 +1,11 @@
+{
+  "name": "gulp-email-html-creator",
+  "version": "1.0.0",
+  "description": "This app makes it easy to create email html templates with pug template, scss and gulp as bundler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
