@@ -1,0 +1,22 @@
+@import "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;400;600;700&display=swap";
+/* @import "https://kit.fontawesome.com/beb3010077.js"; */
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  background-color: #edeef6;
+  font-size: 15px;
+}
+
+a {
+  text-decoration: none;
+  color: #111010;
+  font-family: "Source Sans Pro", sans-serif;
+}

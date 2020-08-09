@@ -1,0 +1,60 @@
+td.wrapper {
+  padding: 10px 0 30px 0;
+  > table {
+    border: 1px solid #cccccc;
+    border-collapse: collapse;
+    tr.header-row {
+      > td {
+        padding: 40px 0 30px 0;
+        color: #153643;
+        font-size: 28px;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        > img {
+          width: 300px;
+          height: 230px;
+          display: block;
+        }
+      }
+    }
+    .content-row {
+      .top-content {
+        padding: 40px 30px 40px 30px;
+        table {
+          .title-cell {
+            color: #153643;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+          }
+          .content-cell {
+            padding: 20px 0 30px 0;
+            color: #153643;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 20px;
+          }
+        }
+      }
+      .left-content {
+        padding: 25px 0 0 0;
+        color: #153643;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 20px;
+      }
+      .right-content {
+        padding: 25px 0 0 0;
+        color: #153643;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 20px;
+      }
+    }
+    .footer-row {
+      .footer {
+        padding: 30px 30px 30px 30px;
+        background-color: #ee4c50;
+      }
+    }
+  }
+}
