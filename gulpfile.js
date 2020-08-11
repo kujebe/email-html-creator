@@ -1,75 +1,75 @@
-const gulp = require("gulp");
-const sass = require("gulp-sass");
+// This is INCORRECT
+const { src, dest, watch, series } = require("gulp");
 const browserSync = require("browser-sync").create();
+const sass = require("gulp-sass");
 const inlineCss = require("gulp-inline-css");
 const replace = require("gulp-replace");
 const rename = require("gulp-rename");
 const pug = require("gulp-pug");
 
-//function to compile scss into css
-function compileStyles() {
+function compileSass() {
+  //1. locate  scss files
   return (
-    gulp
-      //1. locate  scss files
-      .src("./src/scss/**/*.scss")
+    src("./src/scss/**/*.scss")
       //2. Pass scss file through compiler
       .pipe(sass().on("error", sass.logError))
       //3. save compiled css files
-      .pipe(gulp.dest("./src/css"))
-    //4. Stream changes to all browsers
-    // .pipe(browserSync.stream())
-    // .pipe(browserSync.reload({ stream: true }))
-    // );
+      .pipe(dest("./src/css"))
   );
 }
 
-function build() {
+function buildTemplates() {
+  //1 Where are the html template files located
   return (
-    gulp
-      // import all email template (name ending with .template.pug) files from src/emails folder
-      //1 Where are the html files located
-      .src("src/templates/**/*.template.pug")
-
-      // replace `.scss` file paths from template with compiled file paths
-      //2 Rename the extension of the scss files included in the htmls
+    src("src/templates/**/*.template.pug")
+      //2 Rename the extension of the scss files included in the pug template files (<link ...>)
       .pipe(replace(new RegExp("/scss/(.+).scss", "ig"), "/css/$1.css"))
 
-      // compile pug files
+      // compile pug files into html
       .pipe(pug())
 
-      //3 inline the styles
+      //3 inline the
       .pipe(inlineCss())
 
-      // do not generate sub-folders inside dist folder
       //4 don't rename the sub-folders after compilation
       .pipe(rename({ dirname: "" }))
 
       // 5 compile into dist directory in the root
-      .pipe(gulp.dest("dist"))
+      .pipe(dest("dist"))
   );
 }
 
-//Watch task
-function watch() {
-  //1 initiate browser syncronization
+// browserSync task to launch preview server
+function browserSyncInit(done) {
   browserSync.init({
-    server: { baseDir: "./dist" },
+    reloadDelay: 2000, // for me to be able to switch to browser from editor
+    server: "./dist", // Where browserSync should serv from
   });
-  //2 watch changes in src/scss dir, then compile and rebuild again
-  gulp.watch(
-    ["./src/scss/*", "!src/**/*.css"],
-    gulp.series(compileStyles, build)
-  );
-  //3 watch changes in the templates directory, then rebuild and refresh browser
-  gulp
-    .watch(["./src/templates/**/*.template.pug"])
-    .on("change", gulp.series(build, browserSync.reload));
-  //4 whatch js files changes in case you want to add js files
-  //gulp.watch("./src/js/**/*.js").on("change", browserSync.reload);
+  done();
 }
-//export styles compilation task - can be used externally in gulp-cli
-exports.compileStyles = compileStyles;
-// export build task - can be used externally in gulp-cli
-exports.build = build;
-// When you run `gulp watch, compile styles and build in order, then start to watch for changes`
-exports.watch = gulp.series([compileStyles, build], watch);
+
+function reloadBrowserSync(done) {
+  browserSync.reload(); // triger browserSync reload task
+  done();
+}
+
+//1 compile Saas file
+//2 buld pug files
+//3 initial browserSync to open server in browser
+//4 start to watch changes in sass directory and trigger reload
+//4 start to watch changes in templates directory and trigger reload
+exports.default = series(
+  compileSass,
+  buildTemplates,
+  browserSyncInit,
+  function () {
+    watch(
+      "./src/scss/**/*.scss",
+      series(compileSass, buildTemplates, reloadBrowserSync)
+    );
+    watch("./src/templates/**/*.template.pug").on(
+      "change",
+      series(buildTemplates, reloadBrowserSync)
+    );
+  }
+);
