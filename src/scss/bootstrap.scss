@@ -2,7 +2,6 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  border: 0;
   background: transparent;
 }
 
@@ -41,14 +40,12 @@ img {
 table {
   margin: 0;
   padding: 0;
-  border-collapse: collapse;
+  border-collapse: separate;
   empty-cells: hide;
-}
-table.table {
-  width: 600px;
-  margin: 0 auto;
-  background-color: #eee;
 }
 table td {
   margin: 0 auto;
+}
+button {
+  border: none;
 }
